@@ -1,0 +1,103 @@
+{
+  "entities": {
+    "Question": {
+      "title": "Question",
+      "description": "Quiz questions for exam prep in Khmer civil service",
+      "type": "object",
+      "properties": {
+        "subject": { "type": "string" },
+        "question": { "type": "string" },
+        "type": { "type": "string", "enum": ["mcq", "short", "explanation"] },
+        "options": { "type": "array" },
+        "correct": { "type": "number" },
+        "answer": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "order": { "type": "number" }
+      },
+      "required": ["subject", "question", "type"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "Category/Subject entity",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["mcq", "short", "explanation"] },
+        "isActive": { "type": "boolean" },
+        "order": { "type": "number" }
+      },
+      "required": ["name", "type"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User suggestions and feedback",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["username", "text"]
+    },
+    "AppNotification": {
+      "title": "AppNotification",
+      "description": "System broadcast announcement",
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "type": { "type": "string", "enum": ["info", "success", "warning"] }
+      },
+      "required": ["message", "timestamp"]
+    },
+    "LoginRecord": {
+      "title": "LoginRecord",
+      "description": "Access log entry",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "passwordUsed": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] }
+      },
+      "required": ["username", "timestamp", "role"]
+    },
+    "PresenceRecord": {
+      "title": "PresenceRecord",
+      "description": "Real-time user heartbeat",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "lastSeen": { "type": "string" }
+      },
+      "required": ["username", "role", "lastSeen"]
+    }
+  },
+  "firestore": {
+    "/questions/{questionId}": {
+      "schema": "Question",
+      "description": "Collection of all test questions"
+    },
+    "/subjects/{subjectId}": {
+      "schema": "Subject",
+      "description": "Collection of test subjects"
+    },
+    "/feedbacks/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "User feedback messages"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "AppNotification",
+      "description": "System broadcast notifications"
+    },
+    "/logins/{loginId}": {
+      "schema": "LoginRecord",
+      "description": "Login history records"
+    },
+    "/presence/{presenceId}": {
+      "schema": "PresenceRecord",
+      "description": "Active user heartbeat status"
+    }
+  }
+}

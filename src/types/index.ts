@@ -1,0 +1,66 @@
+export type QuestionType = 'mcq' | 'short' | 'explanation';
+
+export interface Question {
+  id?: string;
+  subject: string;
+  question: string;
+  type: QuestionType;
+  options?: string[]; // 4 options for MCQ
+  correct?: number;   // 0-3 for MCQ
+  answer?: string;    // Explanation or Answer
+  isActive?: boolean;
+  order?: number;
+  createdAt?: string;
+}
+
+export interface Subject {
+  id: string;
+  name: string;
+  type: QuestionType;
+  isActive: boolean;
+  order: number;
+  icon?: string;
+}
+
+export interface Feedback {
+  id?: string;
+  username: string;
+  text: string;
+  createdAt: string;
+}
+
+export interface AppNotification {
+  id: string;
+  message: string;
+  timestamp: string;
+  type: 'info' | 'success' | 'warning';
+}
+
+export interface LoginRecord {
+  id: string;
+  username: string;
+  passwordUsed: string;
+  timestamp: string;
+  role: 'user' | 'admin';
+}
+
+export interface PresenceRecord {
+  id: string;
+  username: string;
+  role: 'user' | 'admin';
+  lastSeen: string;
+}
+
+export interface UserSession {
+  username: string;
+  role: 'user' | 'admin';
+  loggedInAt: string;
+}
+
+export interface UserAnswerRecord {
+  questionIndex: number;
+  question: Question;
+  selectedOption?: number;
+  isCorrect?: boolean;
+  userTextAnswer?: string;
+}

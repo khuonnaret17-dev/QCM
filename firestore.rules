@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Master safety deny-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    match /questions/{questionId} {
+      allow read: if true;
+      allow create, update: if isValidId(questionId)
+        && request.resource.data.question is string
+        && request.resource.data.question.size() <= 2000
+        && request.resource.data.subject is string;
+      allow delete: if isValidId(questionId);
+    }
+
+    match /subjects/{subjectId} {
+      allow read: if true;
+      allow create, update: if isValidId(subjectId)
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 200;
+      allow delete: if isValidId(subjectId);
+    }
+
+    match /feedbacks/{feedbackId} {
+      allow read: if true;
+      allow create: if isValidId(feedbackId)
+        && request.resource.data.username is string
+        && request.resource.data.username.size() <= 100
+        && request.resource.data.text is string
+        && request.resource.data.text.size() <= 2000;
+      allow update, delete: if true;
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if true;
+      allow create, update: if isValidId(notificationId)
+        && request.resource.data.message is string
+        && request.resource.data.message.size() <= 1000;
+      allow delete: if isValidId(notificationId);
+    }
+
+    match /logins/{loginId} {
+      allow read: if true;
+      allow create: if isValidId(loginId)
+        && request.resource.data.username is string
+        && request.resource.data.username.size() <= 100;
+      allow update, delete: if true;
+    }
+
+    match /presence/{presenceId} {
+      allow read: if true;
+      allow create, update: if isValidId(presenceId)
+        && request.resource.data.username is string
+        && request.resource.data.username.size() <= 100;
+      allow delete: if true;
+    }
+  }
+}
